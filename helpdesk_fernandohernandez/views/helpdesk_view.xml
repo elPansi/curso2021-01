@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>        
+        <record id="view_helpdesk_ticket_tree_view" model="ir.ui.view">
+            <field name="name">view.helpdesk.tree.view</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="arch" type="xml">
+                <tree string="Ticket">
+                <!--
+                    <field name="sequence" widget="handle"/>
+                    Da fallo -->
+                    
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        
+        <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+            <field name="name">view.helpdesk_ticket.form</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="arch" type="xml">
+                <form string="Ticket">
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="date_limit"/>
+                        </group>
+                        <group>
+                            <field name="assigned"/>
+                            <field name="time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Quality">
+                            <group string="Corrective action" nolabel="1">
+                                <field name="action_corrective"/>
+                            </group>
+                            <group string="Preventive Action">
+                                <field name="action_preventive" nolabel="1"/>
+                            </group>
+                        </page>                        
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+</odoo>

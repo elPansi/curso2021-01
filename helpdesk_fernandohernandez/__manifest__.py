@@ -11,7 +11,9 @@
         "base",
     ],
     "data": [
+        "security/helpdesk_security.xml",
         "security/ir.model.access.csv",
         "views/helpdesk_menu.xml",
+        "views/helpdesk_view.xml",
     ],
 }
