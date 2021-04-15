@@ -6,7 +6,8 @@ class HelpdeskTicket(models.Model):
 
     name = fields.Char(string='Name', required = True)
     description = fields.Text(string='Description')
-    date = fields.Date(string='Date')
+    date = fields.Date()
+    sequence = fields.Integer()
     state = fields.Selection(
         [('nuevo', 'Nuevo'), #valor bd, valor en la vista
         ('asignado', 'Asignado'),

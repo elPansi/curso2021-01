@@ -5,9 +5,8 @@
             <field name="model">helpdesk.ticket</field>
             <field name="arch" type="xml">
                 <tree string="Ticket">
-                <!--
+
                     <field name="sequence" widget="handle"/>
-                    Da fallo -->
                     
                     <field name="name"/>
                     <field name="date"/>
