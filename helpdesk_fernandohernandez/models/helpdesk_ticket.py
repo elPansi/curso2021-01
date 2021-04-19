@@ -27,3 +27,36 @@ class HelpdeskTicket(models.Model):
     action_preventive = fields.Html(
         string="Preventive Action",
         help='Descrive corrective actions to do')
+
+    # #Ejemplo
+    # @api.model
+    # def close_leeds(self):
+    #     active_tickets = self.search(['active', '=', True])
+        
+    #     for ticket in active_tickets:
+    #         ticekt.close()
+
+    def asignar(self):
+        self.ensure_one()
+        self.write({
+            'state': 'asignado',
+            'assigned': True})
+        # for ticket in self: 
+        #     ticket.state = 'asignado'
+        #     ticket.assigned = True
+    
+    def proceso(self):
+        self.ensure_one()   
+        self.state = 'proceso'
+
+    def pendiente(self):
+        self.ensure_one()   
+        self.state = 'pendiente'
+
+    def finalizar(self):
+        self.ensure_one()   
+        self.state = 'finalizado'
+
+    def cancelar(self):
+        self.ensure_one()   
+        self.state = 'cancelado'
