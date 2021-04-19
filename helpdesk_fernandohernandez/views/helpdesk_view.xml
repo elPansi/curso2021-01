@@ -20,9 +20,13 @@
             <field name="arch" type="xml">
                 <form string="Ticket">
                 <header>
+                    <!--
+                    <button string="Asignar" name ="do_assign" type="object" attrs="{'invisible': [('state', '!=', 'nuevo')]}"/>
+                    -->
                     <button string="Asignar" name="asignar" type="object" states="nuevo"/>
                     <button string="En proceso" name="proceso" type="object" states="asignado"/>
                     <button string="Finalizar" name="finalizar" type="object" states="nuevo,asignado,pendiente,proceso"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

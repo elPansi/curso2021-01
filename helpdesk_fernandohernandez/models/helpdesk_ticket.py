@@ -5,7 +5,7 @@ class HelpdeskTicket(models.Model):
     _description = 'Ticket'
 
     name = fields.Char(string='Name', required = True)
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Description', translate=True)
     date = fields.Date()
     sequence = fields.Integer()
     state = fields.Selection(
@@ -55,7 +55,7 @@ class HelpdeskTicket(models.Model):
 
     def finalizar(self):
         self.ensure_one()   
-        self.state = 'finalizado'
+        self.state = 'resuelto'
 
     def cancelar(self):
         self.ensure_one()   
