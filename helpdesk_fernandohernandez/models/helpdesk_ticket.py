@@ -1,4 +1,33 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from datetime import datetime
+
+
+class HelpdeskTicketAction(models.Model):
+    _name = 'helpdesk.ticket.action'
+    _description = 'Action'
+
+    name = fields.Char(string='Name')    
+    date = fields.Date(default=datetime.today())
+
+    ticket_id = fields.Many2one(
+        comodel_name='helpdesk.ticket',
+        string='Ticket')
+
+class HelpdeskTicketTag(models.Model):
+    _name = 'helpdesk.ticket.tag'
+    _description = 'Tag'
+
+
+    name = fields.Char(string='Name', required = True)    
+
+    tickets_ids = fields.Many2many(
+        comodel_name='helpdesk.ticket',
+        relation='helpdesk_ticket_tag_rel',
+        column1='tag_id',
+        column2='ticket_id',
+        string='Tags'
+    )
+
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
@@ -19,7 +48,13 @@ class HelpdeskTicket(models.Model):
         default='nuevo')
 
     time = fields.Float(string='Time')
-    assigned = fields.Boolean(string='Assigned', readonly=True)
+
+    #assigned = fields.Boolean(string='Assigned', readonly=True)
+    
+    assigned = fields.Boolean(
+        string='Assigned', 
+        compute='_compute_assigned')
+
     date_limit = fields.Date(string='Date Limit' )
     action_corrective = fields.Html(
         string="Corrective Action",
@@ -28,13 +63,33 @@ class HelpdeskTicket(models.Model):
         string="Preventive Action",
         help='Descrive corrective actions to do')
 
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        string='Assigned to')
+
+    action_ids = fields.One2many(
+        comodel_name='helpdesk.ticket.action',
+        inverse_name='ticket_id',
+        string='Assigned to')
+
+    tag_ids = fields.Many2many(
+        comodel_name='helpdesk.ticket.tag',
+        relation='helpdesk_ticket_tag_rel',
+        column1='ticket_id',
+        column2='tag_id',
+        string='Tags'
+    )
+
+    tag_name = fields.Char(
+        string='Tag Name')
+
     # #Ejemplo
     # @api.model
     # def close_leeds(self):
     #     active_tickets = self.search(['active', '=', True])
         
     #     for ticket in active_tickets:
-    #         ticekt.close()
+    #         ticket.close()
 
     def asignar(self):
         self.ensure_one()
@@ -60,3 +115,49 @@ class HelpdeskTicket(models.Model):
     def cancelar(self):
         self.ensure_one()   
         self.state = 'cancelado'
+    
+    @api.depends('user_id')
+    def _compute_assigned(self):
+        for record in self:
+            record.assigned= self.user_id and True or False
+    
+
+    ticket_qty = fields.Integer(
+        string='Ticket Qty',
+        compute='_compute_ticket_qty')
+
+    @api.depends('user_id')
+    def _compute_ticket_qty(self):
+        for record in self:
+            other_tickets = self.env['helpdesk.ticket'].search([('user_id', '=', record.user_id.id)])
+            record.ticket_qty = len(other_tickets)
+    
+    def create_tag(self):
+        self.ensure_one()
+        # opción 1
+        self.write({
+            'tag_ids': [(0, 0, {'name': self.tag_name})]
+        })
+        self.tag_name = False
+        # # opcion 2
+        # tag = self.env['helpdesk.ticket.tag'].create({
+        #     'name': self.tag_name
+        # })
+        # self.write({
+        #     'tag_ids': [(4, tag.id, 0)]
+        # })        
+        # # opcion 3
+        # tag = self.env['helpdesk.ticket.tag'].create({
+        #     'name': self.tag_name
+        # })
+        # self.write({
+        #     'tag_ids': [(6, 0, tag.ids)]
+        # })   
+        # # opción 4
+        # tag = self.env['helpdesk.ticket.tag'].create({
+        #     'name': self.tag_name,
+        #     'ticket_ids': [(6, 0, self.ids)]
+        # })
+
+        
+    
