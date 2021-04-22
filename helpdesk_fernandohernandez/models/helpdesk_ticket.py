@@ -35,7 +35,7 @@ class HelpdeskTicket(models.Model):
 
     name = fields.Char(string='Name', required = True)
     description = fields.Text(string='Description', translate=True)
-    date = fields.Date()
+    date = fields.Date(default=datetime.today())
     sequence = fields.Integer()
     state = fields.Selection(
         [('nuevo', 'Nuevo'), #valor bd, valor en la vista
@@ -47,7 +47,7 @@ class HelpdeskTicket(models.Model):
         string='State',
         default='nuevo')
 
-    time = fields.Float(string='Time')
+    time = fields.Float(string='Time', )
 
     #assigned = fields.Boolean(string='Assigned', readonly=True)
     
@@ -93,12 +93,12 @@ class HelpdeskTicket(models.Model):
 
     def asignar(self):
         self.ensure_one()
-        self.write({
-            'state': 'asignado',
-            'assigned': True})
-        # for ticket in self: 
-        #     ticket.state = 'asignado'
-        #     ticket.assigned = True
+        # self.write({
+        #     'state': 'asignado', #¿Esto por que no lo hace?
+        #     'assigned': True})
+        for ticket in self: 
+            ticket.state = 'asignado'  #¿Esto por que no lo hace?
+            ticket.assigned = True
     
     def proceso(self):
         self.ensure_one()   
