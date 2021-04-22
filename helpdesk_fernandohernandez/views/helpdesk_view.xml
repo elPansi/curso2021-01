@@ -7,7 +7,13 @@
                 <tree string="Ticket">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
+                    <field name="time" widget="float_time"/>
+                    <!-- <field name="space"/>  -->
+                    <field name="user_id"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="action_ids" widget="many2many_tags"/>
                     <field name="date"/>
+                    <field name="date_limit"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -93,6 +99,7 @@
                     <field name="user_id"/>                                
                     <field name="date" interval="month" type="col"/>
                     <field name="time" type="measure" widget="float_time"/>   
+                    <!-- <field name="state" type="measure"/> -->
                 </pivot>
             </field>
         </record>     
@@ -110,7 +117,7 @@
             <field name="name">view.helpdesk.calendar</field>
             <field name="model">helpdesk.ticket</field>
             <field name="arch" type="xml">
-                <calendar string="Tickets" date_start="date" color="user_id" hide_time="true" event_limit="5">
+                <calendar string="Tickets" date_start="date" color="user_id" mode="month" hide_time="true" event_limit="5">
                     <field name="user_id" avatar_field="image_128"/>        
                     <field name="name"/>        
                     <field name="user_id" filters="1" invisible="1"/>   
@@ -131,15 +138,28 @@
                                 <div class="o_kanban_record_subtitle">
                                     <span>
                                         <field name="date"/>
-                                        <field name="time"/>
+                                        <field name="time" widget="float_time"/>
                                     </span>
                                 </div>
                                 <div class="o_kanban_record_bottom">
                                      <div  class="oe_kanban_bottom_left">
                                         <field name="state"/>
-                                    </div>                               
-                                    <div  class="oe_kanban_bottom_right">
-                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                        <br />
+                                        <div class="o_kanban_inline_block">
+                                            <field name="tag_ids" widget="many2many_tags"/>
+                                            <field name="action_ids" widget="many2many_tags"/>
+                                        </div>
+                                        <!-- <div>
+                                            <br />
+                                            <field name="tag_ids" widget="many2many_tags"/>
+                                            
+                                        </div>          -->
+                                        <!-- <div class="o_kanban_inline_block">
+                                            <field name="action_ids" widget="many2many_tags"/>
+                                        </div>                     -->
+                                        <div  class="oe_kanban_bottom_right">
+                                            <field name="user_id" widget="many2one_avatar_user"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

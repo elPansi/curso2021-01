@@ -70,7 +70,7 @@ class HelpdeskTicket(models.Model):
     action_ids = fields.One2many(
         comodel_name='helpdesk.ticket.action',
         inverse_name='ticket_id',
-        string='Assigned to')
+        string='Actions')
 
     tag_ids = fields.Many2many(
         comodel_name='helpdesk.ticket.tag',
