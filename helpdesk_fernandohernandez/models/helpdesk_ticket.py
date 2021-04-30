@@ -30,10 +30,13 @@ class HelpdeskTicketTag(models.Model):
     )
     @api.model
     def cron_delete_tag(self):
-        self.search([('tickets_ids', '=', False)])
-        tickets.unlink()
+        tags = self.search([('tickets_ids', '=', False)])
+        tags.unlink()
 
-
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(HelpdeskTicketTag, self).create(vals)
+        return res
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
@@ -67,7 +70,8 @@ class HelpdeskTicket(models.Model):
         string='Time',
         compute='_get_time',
         inverse='_set_time',
-        search='_search_time' )
+        search='_search_time',
+        store=True )
     #assigned = fields.Boolean(string='Assigned', readonly=True)
 
     assigned = fields.Boolean(
@@ -208,6 +212,7 @@ class HelpdeskTicket(models.Model):
         action['context'] = {
             'default_name': self.tag_name,
             'default_tickets_ids': [(6, 0, self.ids)]
+            # ¿es default_ticket_ids o default_tickets_ids?
         }
         self.tag_name = False
         return action
@@ -221,6 +226,8 @@ class HelpdeskTicket(models.Model):
     @api.onchange('date', 'time')
     def _onchange_date(self):
         self.date_limit = self.date and self.date + timedelta(hours=self.time)
+
+
 
     # @api.onchange('date_limit')
     # def _onchangedate_limit(self):

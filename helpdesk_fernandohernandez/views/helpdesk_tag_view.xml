@@ -57,6 +57,8 @@
             </field>
         </record>
 
+        <!-- La llamada a view_helpdesk_ticket_tag_form, falla, ¿por que? -->
+        <!-- Llamando a view_helpdesk_ticket_tag_simple_form, si funciona -->
         <record id="action_new_tag" model="ir.actions.act_window">
             <field name="name">New Tag</field>
             <field name="res_model">helpdesk.ticket.tag</field>
