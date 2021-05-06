@@ -15,10 +15,11 @@
         "data/delete_tag_cron.xml",
         "security/helpdesk_security.xml",
         "security/ir.model.access.csv",
+        "reports/helpdesk_ticket_report_templates.xml",
+        "reports/res_partner_templates.xml",
         "views/helpdesk_menu.xml",
         "wizards/create_ticket_view.xml",
         "views/helpdesk_tag_view.xml",
         "views/helpdesk_view.xml",
-        
     ],
 }

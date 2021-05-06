@@ -17,7 +17,7 @@ class HelpdeskTicketAction(models.Model):
     ticket_id = fields.Many2one(
         comodel_name='helpdesk.ticket',
         string='Ticket')
-    
+    email_from = fields.Char(string='Email from')
 
 class HelpdeskTicketTag(models.Model):
     _name = 'helpdesk.ticket.tag'
@@ -115,7 +115,7 @@ class HelpdeskTicket(models.Model):
         comodel_name='res.partner',
         string='Partner')
 
-    email_from = fields.Char(string='Email from')
+    # email_from = fields.Char(string='Email from')
     
     # #Ejemplo
     # @api.model
