@@ -5,6 +5,11 @@ from datetime import datetime, timedelta
 class HelpdeskTicketAction(models.Model):
     _name = 'helpdesk.ticket.action'
     _description = 'Action'
+    _inherit = ['mail.thread.cc',
+                'mail.thread.blacklist',
+
+                'mail.activity.mixin' ]
+    _primary_email = 'email_from'
 
     name = fields.Char(string='Name')
     date = fields.Date(default=datetime.today())
@@ -106,6 +111,12 @@ class HelpdeskTicket(models.Model):
     tag_name = fields.Char(
         string='Tag Name')
 
+    partner_id = fields.Many2one(
+        comodel_name='res.partner',
+        string='Partner')
+
+    email_from = fields.Char(string='Email from')
+    
     # #Ejemplo
     # @api.model
     # def close_leeds(self):
@@ -158,6 +169,10 @@ class HelpdeskTicket(models.Model):
     def cancelar(self):
         self.ensure_one()
         self.state = 'cancelado'
+
+    def cancelar_multi(self):
+        for record in self:
+            record.cancelar()
 
     def do_recover(self):
         self.ensure_one()
